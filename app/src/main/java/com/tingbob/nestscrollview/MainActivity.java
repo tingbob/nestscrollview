@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
                     tvTitle.setAlpha(1);
                 } else {
                     float alpha = (Math.abs((float) verticalOffset))/(float)appBarLayout.getTotalScrollRange();
-                    Log.d("nestscrollview", "verticalOffset = " + verticalOffset);
-                    Log.d("nestscrollview", "getTotalScrollRange = " + appBarLayout.getTotalScrollRange());
-                    Log.d("nestscrollview", "alpha = " + alpha);
+//                    Log.d("nestscrollview", "verticalOffset = " + verticalOffset);
+//                    Log.d("nestscrollview", "getTotalScrollRange = " + appBarLayout.getTotalScrollRange());
+//                    Log.d("nestscrollview", "alpha = " + alpha);
 
                     tvTitle.setAlpha(alpha);
                 }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager mViewPager) {
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MenuFragment.newInstance(), "DRecycleView");
+        adapter.addFragment(DRecyclerViewFragment.newInstance(), "DRecycleView");
         adapter.addFragment(WebViewFragment.newInstance(), "WebView");
         adapter.addFragment(OtherFragment.newInstance(), "Other");
         mViewPager.setAdapter(adapter);

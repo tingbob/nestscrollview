@@ -2,6 +2,7 @@ package com.tingbob.nestscrollview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,12 @@ import java.util.List;
 /**
  * Created by nlv on 15/6/8.
  */
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ItemHolder> {
-    private List<String> mList;
+public class RecycleViewAdapter<T> extends RecyclerView.Adapter<RecycleViewAdapter.ItemHolder> {
+    private List<T> mList;
     protected Context mContext;
     private int mLayout;
 
-    public RecycleViewAdapter(Context context, List<String> list, int layout) {
+    public RecycleViewAdapter(Context context, List<T> list, int layout) {
         mContext = context;
         mList = list;
         mLayout = layout;
@@ -26,13 +27,46 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItemHolder(inflateLayout());
+        View view = inflateLayout();
+
+        return new ItemHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ItemHolder holder, int position) {
-        holder.mStringTextView.setText(mList.get(position));
+    public void onBindViewHolder(final ItemHolder holder, final int position) {
+        if (mList.get(position) instanceof String) {
+            holder.mStringTextView.setText((String)mList.get(position));
+            holder.getRootView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        //注意这里使用getTag方法获取数据
+                        mOnItemClickListener.onItemClick(position);
+                    }
+                }
+            });
+        } else if (mList.get(position) instanceof ItemSticky) {
+            ItemSticky itemSticky = (ItemSticky) mList.get(position);
+            holder.mStringTextView.setText(itemSticky.getText());
+            if (itemSticky.getType() == Constants.ITEM_HEADER) {
+                holder.mStringTextView.setBackgroundResource(R.color.orange);
+            } else {
+                holder.mStringTextView.setBackgroundResource(R.color.white);
+            }
+        }
 
+    }
+
+    public T getItem(int position) {
+        return mList.get(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mList.get(position) instanceof ItemSticky) {
+            return ((ItemSticky) mList.get(position)).getType();
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -51,10 +85,26 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public static class ItemHolder extends RecyclerView.ViewHolder{
         public TextView mStringTextView;
+        private View rootView;
 
         public ItemHolder(View itemView) {
             super(itemView);
+            rootView = itemView;
             mStringTextView = (TextView) itemView.findViewById(R.id.string_textview);
         }
+
+        public View getRootView() {
+            return rootView;
+        }
+    }
+
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnRecyclerViewItemClickListener {
+        void onItemClick(int position);
     }
 }
