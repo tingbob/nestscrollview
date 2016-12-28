@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ItemSticky implements Serializable {
     private String text;
     private int type;
-    private int pos;
+    private int groupPos;
 
     public String getText() {
         return text;
@@ -27,11 +27,11 @@ public class ItemSticky implements Serializable {
         this.type = type;
     }
 
-    public int getPos() {
-        return pos;
+    public int getGroupPos() {
+        return groupPos;
     }
 
-    public void setPos(int pos) {
-        this.pos = pos;
+    public void setGroupPos(int groupPos) {
+        this.groupPos = groupPos;
     }
 }

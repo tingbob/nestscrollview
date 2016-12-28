@@ -3,12 +3,9 @@ package com.tingbob.nestscrollview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,7 +35,6 @@ public class DRecyclerViewFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         recyclerView1.setLayoutManager(linearLayoutManager);
-        recyclerView1.setNestedScrollingEnabled(false);
         ArrayList<String> list1 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             list1.add("1recyclerView_" + i);
@@ -53,7 +49,6 @@ public class DRecyclerViewFragment extends Fragment {
         final LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
         linearLayoutManager2.setSmoothScrollbarEnabled(true);
         recyclerView2.setLayoutManager(linearLayoutManager2);
-        recyclerView2.setNestedScrollingEnabled(false);
         ArrayList<ItemSticky> list2 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
@@ -62,7 +57,7 @@ public class DRecyclerViewFragment extends Fragment {
             ItemSticky itemSticky = new ItemSticky();
             itemSticky.setType(Constants.ITEM_HEADER);
             itemSticky.setText("1recyclerView_" + i);
-            itemSticky.setPos(i);
+            itemSticky.setGroupPos(i);
             list2.add(itemSticky);
             for (int j = 0; j < 10; j++) {
                 ItemSticky itemStickyC = new ItemSticky();
@@ -78,20 +73,29 @@ public class DRecyclerViewFragment extends Fragment {
         mAdapter2 = new RecycleViewAdapter<>(getContext(), list2, R.layout.item_string_list);
         recyclerView2.setAdapter(mAdapter2);
 
-        final NestedScrollView nestedScrollView1 = (NestedScrollView) view.findViewById(R.id.ns_1);
-
-        final NestedScrollView nestedScrollView2 = (NestedScrollView) view.findViewById(R.id.ns_2);
-        nestedScrollView2.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+        recyclerView2.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                View view = v.getChildAt(v.getChildCount() - 1);
-                int totalItemCount = linearLayoutManager2.getItemCount();
-                int itemHeight = view.getHeight() / totalItemCount;
-                int pos = scrollY / itemHeight;
-                ItemSticky itemSticky = mAdapter2.getItem(pos);
-                if (itemSticky.getType() == Constants.ITEM_HEADER) {
-                    tv_sticky.setText(itemSticky.getText());
-                    nestedScrollView1.smoothScrollTo(0, itemSticky.getPos()*itemHeight);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                //判断是当前layoutManager是否为LinearLayoutManager
+                // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+                if (layoutManager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+                    //获取最后一个可见view的位置
+                    int lastItemPosition = linearManager.findLastVisibleItemPosition();
+                    //获取第一个可见view的位置
+                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+                    ItemSticky itemSticky = (ItemSticky) ((RecycleViewAdapter)recyclerView.getAdapter()).getItem(firstItemPosition);
+                    if (itemSticky != null && itemSticky.getType() == Constants.ITEM_HEADER) {
+                        tv_sticky.setText(itemSticky.getText());
+                        recyclerView1.smoothScrollToPosition(itemSticky.getGroupPos());
+                    }
                 }
             }
         });
@@ -100,12 +104,11 @@ public class DRecyclerViewFragment extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 int totalItemCount = linearLayoutManager2.getItemCount();
-                int itemHeight = recyclerView2.getHeight() / totalItemCount;
                 String title = mAdapter1.getItem(position);
                 for (int i = 0; i < totalItemCount; i++) {
                     ItemSticky itemSticky = mAdapter2.getItem(i);
                     if (title.equals(itemSticky.getText())) {
-                        nestedScrollView2.smoothScrollTo(0, i * itemHeight);
+                        recyclerView2.smoothScrollToPosition(i);
                         break;
                     }
                 }
