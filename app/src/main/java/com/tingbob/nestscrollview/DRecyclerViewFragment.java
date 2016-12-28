@@ -98,7 +98,7 @@ public class DRecyclerViewFragment extends Fragment {
 
         mAdapter1.setOnItemClickListener(new RecycleViewAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View v, int position) {
                 int totalItemCount = linearLayoutManager2.getItemCount();
                 int itemHeight = recyclerView2.getHeight() / totalItemCount;
                 String title = (String) mAdapter1.getItem(position);

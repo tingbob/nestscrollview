@@ -40,8 +40,7 @@ public class RecycleViewAdapter<T> extends RecyclerView.Adapter<RecycleViewAdapt
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
-                        //注意这里使用getTag方法获取数据
-                        mOnItemClickListener.onItemClick(position);
+                        mOnItemClickListener.onItemClick(v, position);
                     }
                 }
             });
@@ -105,6 +104,6 @@ public class RecycleViewAdapter<T> extends RecyclerView.Adapter<RecycleViewAdapt
     }
 
     public interface OnRecyclerViewItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(View v, int position);
     }
 }
