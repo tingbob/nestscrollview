@@ -105,7 +105,6 @@ public class DRecyclerViewFragment extends Fragment {
         });
 
         PinnedHeaderDecoration pinnedHeaderDecoration = new PinnedHeaderDecoration();
-        //设置只有RecyclerItem.ITEM_HEADER的item显示标签
         pinnedHeaderDecoration.setPinnedTypeHeader(Constants.ITEM_HEADER);
         pinnedHeaderDecoration.registerTypePinnedHeader(Constants.ITEM_HEADER, new PinnedHeaderDecoration.PinnedHeaderCreator() {
             @Override
