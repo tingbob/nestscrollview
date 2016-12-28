@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,9 @@ public class DRecyclerViewFragment extends Fragment {
         mAdapter1 = new RecycleViewAdapter<>(getContext(), list1, R.layout.item_string_list);
         recyclerView1.setAdapter(mAdapter1);
 
+        final TextView tv_sticky = (TextView) view.findViewById(R.id.string_textview);
+        tv_sticky.setBackgroundResource(R.color.orange);
+
         final RecyclerView recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
         final LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
         linearLayoutManager2.setSmoothScrollbarEnabled(true);
@@ -52,6 +56,9 @@ public class DRecyclerViewFragment extends Fragment {
         recyclerView2.setNestedScrollingEnabled(false);
         ArrayList<ItemSticky> list2 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
+            if (i == 0) {
+                tv_sticky.setText("1recyclerView_" + i);
+            }
             ItemSticky itemSticky = new ItemSticky();
             itemSticky.setType(Constants.ITEM_HEADER);
             itemSticky.setText("1recyclerView_" + i);
@@ -83,6 +90,7 @@ public class DRecyclerViewFragment extends Fragment {
                 int pos = scrollY / itemHeight;
                 ItemSticky itemSticky = (ItemSticky) mAdapter2.getItem(pos);
                 if (itemSticky.getType() == Constants.ITEM_HEADER) {
+                    tv_sticky.setText(itemSticky.getText());
                     nestedScrollView1.smoothScrollTo(0, itemSticky.getPos()*itemHeight);
                 }
             }
