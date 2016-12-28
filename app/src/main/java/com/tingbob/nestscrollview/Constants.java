@@ -6,6 +6,5 @@ package com.tingbob.nestscrollview;
 
 public class Constants {
     public static final int ITEM_HEADER = 1;
-    public static final int ITEM_POSTER = 2;
-    public static final int ITEM_DESC = 3;
+    public static final int ITEM_DESC = 2;
 }

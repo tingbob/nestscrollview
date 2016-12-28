@@ -42,18 +42,12 @@ public class DRecyclerViewFragment extends Fragment {
         mAdapter1 = new RecycleViewAdapter<>(getContext(), list1, R.layout.item_string_list);
         recyclerView1.setAdapter(mAdapter1);
 
-        final TextView tv_sticky = (TextView) view.findViewById(R.id.string_textview);
-        tv_sticky.setBackgroundResource(R.color.orange);
-
         final RecyclerView recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
         final LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
         linearLayoutManager2.setSmoothScrollbarEnabled(true);
         recyclerView2.setLayoutManager(linearLayoutManager2);
         ArrayList<ItemSticky> list2 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            if (i == 0) {
-                tv_sticky.setText("1recyclerView_" + i);
-            }
             ItemSticky itemSticky = new ItemSticky();
             itemSticky.setType(Constants.ITEM_HEADER);
             itemSticky.setText("1recyclerView_" + i);
@@ -61,11 +55,7 @@ public class DRecyclerViewFragment extends Fragment {
             list2.add(itemSticky);
             for (int j = 0; j < 10; j++) {
                 ItemSticky itemStickyC = new ItemSticky();
-                if (j == 0) {
-                    itemStickyC.setType(Constants.ITEM_POSTER);
-                } else {
-                    itemStickyC.setType(Constants.ITEM_DESC);
-                }
+                itemStickyC.setType(Constants.ITEM_DESC);
                 itemStickyC.setText("2recyclerView_" + i + j);
                 list2.add(itemStickyC);
             }
@@ -93,7 +83,6 @@ public class DRecyclerViewFragment extends Fragment {
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
                     ItemSticky itemSticky = (ItemSticky) ((RecycleViewAdapter)recyclerView.getAdapter()).getItem(firstItemPosition);
                     if (itemSticky != null && itemSticky.getType() == Constants.ITEM_HEADER) {
-                        tv_sticky.setText(itemSticky.getText());
                         recyclerView1.smoothScrollToPosition(itemSticky.getGroupPos());
                     }
                 }
@@ -114,6 +103,18 @@ public class DRecyclerViewFragment extends Fragment {
                 }
             }
         });
+
+        PinnedHeaderDecoration pinnedHeaderDecoration = new PinnedHeaderDecoration();
+        //设置只有RecyclerItem.ITEM_HEADER的item显示标签
+        pinnedHeaderDecoration.setPinnedTypeHeader(Constants.ITEM_HEADER);
+        pinnedHeaderDecoration.registerTypePinnedHeader(Constants.ITEM_HEADER, new PinnedHeaderDecoration.PinnedHeaderCreator() {
+            @Override
+            public boolean create(RecyclerView parent, int adapterPosition) {
+                return true;
+            }
+        });
+
+        recyclerView2.addItemDecoration(pinnedHeaderDecoration);
 
         return view;
     }
