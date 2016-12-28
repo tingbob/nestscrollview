@@ -88,7 +88,7 @@ public class DRecyclerViewFragment extends Fragment {
                 int totalItemCount = linearLayoutManager2.getItemCount();
                 int itemHeight = view.getHeight() / totalItemCount;
                 int pos = scrollY / itemHeight;
-                ItemSticky itemSticky = (ItemSticky) mAdapter2.getItem(pos);
+                ItemSticky itemSticky = mAdapter2.getItem(pos);
                 if (itemSticky.getType() == Constants.ITEM_HEADER) {
                     tv_sticky.setText(itemSticky.getText());
                     nestedScrollView1.smoothScrollTo(0, itemSticky.getPos()*itemHeight);
@@ -101,9 +101,9 @@ public class DRecyclerViewFragment extends Fragment {
             public void onItemClick(View v, int position) {
                 int totalItemCount = linearLayoutManager2.getItemCount();
                 int itemHeight = recyclerView2.getHeight() / totalItemCount;
-                String title = (String) mAdapter1.getItem(position);
+                String title = mAdapter1.getItem(position);
                 for (int i = 0; i < totalItemCount; i++) {
-                    ItemSticky itemSticky = (ItemSticky) mAdapter2.getItem(i);
+                    ItemSticky itemSticky = mAdapter2.getItem(i);
                     if (title.equals(itemSticky.getText())) {
                         nestedScrollView2.smoothScrollTo(0, i * itemHeight);
                         break;
