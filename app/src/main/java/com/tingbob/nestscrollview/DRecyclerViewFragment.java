@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class DRecyclerViewFragment extends Fragment {
 
-    private RecycleViewAdapter mAdapter1;
-    private RecycleViewAdapter mAdapter2;
+    private RecycleViewAdapter<String> mAdapter1;
+    private RecycleViewAdapter<ItemSticky> mAdapter2;
 
     public static DRecyclerViewFragment newInstance() {
         Bundle args = new Bundle();

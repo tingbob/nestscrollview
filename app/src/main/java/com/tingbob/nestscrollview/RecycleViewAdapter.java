@@ -27,7 +27,7 @@ public class RecycleViewAdapter<T> extends RecyclerView.Adapter<RecycleViewAdapt
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflateLayout();
+        View view = LayoutInflater.from(parent.getContext()).inflate(mLayout, parent, false);
 
         return new ItemHolder(view);
     }
@@ -71,15 +71,6 @@ public class RecycleViewAdapter<T> extends RecyclerView.Adapter<RecycleViewAdapt
     @Override
     public int getItemCount() {
         return mList.size();
-    }
-
-    public View inflateLayout() {
-        return inflateLayout(mLayout);
-    }
-
-    public View inflateLayout(int res) {
-        LayoutInflater inf = LayoutInflater.from(mContext);
-        return inf.inflate(res, null);
     }
 
     public static class ItemHolder extends RecyclerView.ViewHolder{
