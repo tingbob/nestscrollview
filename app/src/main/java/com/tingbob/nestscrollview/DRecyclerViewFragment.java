@@ -108,7 +108,7 @@ public class DRecyclerViewFragment extends Fragment {
                 for (int i = 0; i < totalItemCount; i++) {
                     ItemSticky itemSticky = mAdapter2.getItem(i);
                     if (title.equals(itemSticky.getText())) {
-                        recyclerView2.smoothScrollToPosition(i);
+                        linearLayoutManager2.scrollToPositionWithOffset(i, 0);
                         break;
                     }
                 }
