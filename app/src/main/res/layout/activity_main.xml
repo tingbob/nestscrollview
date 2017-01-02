@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="com.tingbob.nestscrollview.CustomScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:id="@+id/llyt_content"
@@ -93,15 +93,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Footer aligned to bottom -->
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/accent"
+        android:gravity="center"
+        app:layout_anchor="@id/llyt_content"
+        app:layout_anchorGravity="bottom">
 
         <TextView
-            android:id="@+id/tv_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fixed Footer"
             android:textColor="@color/white"
-            android:text="bottom view" />
+            android:textSize="20sp" />
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
