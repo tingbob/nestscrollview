@@ -102,9 +102,6 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/llyt_content"
         app:layout_anchorGravity="bottom">
-        <include layout="@layout/bottom_pop"
-            android:id="@+id/bottom_pop_view"
-            android:visibility="gone"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"

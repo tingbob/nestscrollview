@@ -110,17 +110,7 @@ public class MainActivity extends AppCompatActivity {
         bottomView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showPupupWindow();
-                bottomView.findViewById(R.id.bottom_pop_view).setVisibility(View.VISIBLE);
-            }
-        });
-
-        View blankView = bottomView.findViewById(R.id.tv_bottom_pop);
-        blankView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomView.findViewById(R.id.bottom_pop_view).setVisibility(View.GONE);
-
+                showPupupWindow();
             }
         });
     }
